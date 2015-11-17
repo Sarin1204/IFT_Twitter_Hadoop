@@ -1,0 +1,5 @@
+#surefire
+#Tue Nov 17 11:20:41 MST 2015
+user.dir=/home/hadoop/workspace1/project
+localRepository=/home/hadoop/.m2/repository
+basedir=/home/hadoop/workspace1/project

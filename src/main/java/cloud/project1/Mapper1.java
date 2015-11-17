@@ -41,7 +41,7 @@ public class Mapper1 extends Mapper<LongWritable,Text,Text,TextArrayWritable>{
 			if(status.contains(hcs))
 			{
 				log.info(" "+hcs);
-				Text[] t=new Text[3];
+				Text[] t=new Text[1];
 				t[0]=new Text(s.getText());
 				log.info("Text "+t);
 				tw.set(t);
