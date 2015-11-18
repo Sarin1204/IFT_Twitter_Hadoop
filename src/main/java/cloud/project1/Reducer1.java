@@ -18,15 +18,13 @@ public class Reducer1 extends Reducer<Text,TextArrayWritable,Text,Text>{
 		for(TextArrayWritable s:arg1)
 		{
 			try{
-			for(Writable write:s.get())
-			{
-			Text t=(Text)write;
-			context.write(arg0,t);
-			}
+					System.out.println("Inside Reducer1");
+					context.write(arg0, s.getValue());
 			}
 			catch(Exception e)
 			{
-				System.err.print(e.getMessage());	
+				System.err.print(e.getMessage());
+				System.out.println("Inside Reducer1 exception"+e);
 			}
 		
 		}

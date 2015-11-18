@@ -34,13 +34,34 @@ public class Mapper1 extends Mapper<LongWritable,Text,Text,TextArrayWritable>{
 	public void map(LongWritable key, Text value, Context context)throws IOException, InterruptedException {
 		Status s;
 		try {
+			System.out.println("Before create status tweet is");
 			s = TwitterObjectFactory.createStatus(value.toString());
+			System.out.println("After create status");
 				String status=s.getText();
-		for(String hcs:hc1)
+				System.out.println("After status getText "+status);
+		
+				for(String djs:dj1)
+				{
+					if(status.contains(djs))
+					{
+						System.out.println("Inside contains djs");
+						Text[] t=new Text[1];
+						t[0]=new Text(s.getText());
+						Text text = new Text(s.getText());
+						System.out.println("Inside contains djs");
+						log.info("Text "+t);
+						tw.set(text);
+						log.info("Mapper Output "+tw.toString());
+						context.write(new Text("Donald Trump"),tw);
+						break;
+					}
+				}		
+				
+/*		for(String hcs:hc1)
 		{
 			if(status.contains(hcs))
 			{
-				log.info(" "+hcs);
+				System.out.println("Inside hillary contains hcs");
 				Text[] t=new Text[1];
 				t[0]=new Text(s.getText());
 				log.info("Text "+t);
@@ -50,7 +71,7 @@ public class Mapper1 extends Mapper<LongWritable,Text,Text,TextArrayWritable>{
 				break;
 			}
 		}
-/*		for(String djs:dj1)
+	for(String djs:dj1)
 		{
 			if(status.contains(djs))
 			{
@@ -108,7 +129,9 @@ public class Mapper1 extends Mapper<LongWritable,Text,Text,TextArrayWritable>{
 */		
 		} catch (TwitterException e) {
 			// TODO Auto-generated catch block
+			System.out.println("Inside TwitterException for tweet value is"+ value.toString());
 			e.printStackTrace();
+			return;
 		}
 	}
 

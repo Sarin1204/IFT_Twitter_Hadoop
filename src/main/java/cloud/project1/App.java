@@ -17,8 +17,8 @@ public class App {
 		Job j=new Job();
 		j.setJarByClass(App.class);
 		j.setJobName("Project");
-		FileInputFormat.addInputPath(j,new Path("/user/flume/tweets/FlumeData.1447173827757"));
-		FileOutputFormat.setOutputPath(j,new Path("/user/mapred/output"));
+		FileInputFormat.addInputPath(j,new Path("/project/tweetDataShort.txt"));
+		FileOutputFormat.setOutputPath(j,new Path("/project/output/tweetOutput1"));
 		j.setMapperClass(Mapper1.class);
 		j.setReducerClass(Reducer1.class);
 		j.setOutputKeyClass(Text.class);
