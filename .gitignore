@@ -1,0 +1,4 @@
+/cloud/
+*.jar
+/META-INF/
+*.class
