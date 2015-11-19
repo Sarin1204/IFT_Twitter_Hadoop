@@ -17,14 +17,14 @@ public class App {
 		Job j=new Job();
 		j.setJarByClass(App.class);
 		j.setJobName("Project");
-		FileInputFormat.addInputPath(j,new Path("/project/tweetDataShort.txt"));
+		FileInputFormat.addInputPath(j,new Path("/project/input/stream"));
 		FileOutputFormat.setOutputPath(j,new Path("/project/output/tweetOutput1"));
 		j.setMapperClass(Mapper1.class);
 		j.setReducerClass(Reducer1.class);
 		j.setOutputKeyClass(Text.class);
 		j.setOutputValueClass(Text.class);
 		j.setMapOutputKeyClass(Text.class);
-		j.setMapOutputValueClass(TextArrayWritable.class);
+		j.setMapOutputValueClass(CustomWritable.class);
 		System.exit(j.waitForCompletion(true) ? 0 : 1);
 	}
 }

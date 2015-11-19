@@ -2,9 +2,13 @@ package cloud.project1;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.StringTokenizer;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.hadoop.io.ArrayWritable;
+import org.apache.hadoop.io.IntWritable;
 //import org.apache.commons.logging.Log;
 //import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.io.LongWritable;
@@ -13,127 +17,81 @@ import org.apache.hadoop.io.ObjectWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
-import cloud.project1.TextArrayWritable;
+import cloud.project1.CustomWritable;
 import twitter4j.Status;
 import twitter4j.TwitterException;
 import twitter4j.TwitterObjectFactory;
 
 
-public class Mapper1 extends Mapper<LongWritable,Text,Text,TextArrayWritable>{
+public class Mapper1 extends Mapper<LongWritable,Text,Text,CustomWritable>{
 	Logger log= LoggerFactory.getLogger(Mapper1.class);
-	TextArrayWritable tw =new TextArrayWritable();
-//	HashMap<String,Status> output=new HashMap<String,Status>();
-	public String[] hc1={"Hillary","Clinton"};
-	public String[] bc1={"Ben","Carson"};
-	public String[] dj1={"Donald J.","Donald J. Trump","Donald","Trump"};
-	public String[] jb1={"Jeb","Bush"};
-	public String[] bs1={"Bernie","Sanders"};
-	public String[] mm1={"Martin O'Malley","Martin","Malley"};
-	public String[] tc1={"Ted","Cruz"};
+	CustomWritable tw =new CustomWritable();
+	HashMap<String,String> input=new HashMap<String,String>();
+	
+	
+	@Override
+	public void setup(Context ct)
+	{
+			input.put("Hillary", "Hillary Clinton");
+			input.put("Clinton", "Hillary Clinton");
+			input.put("@HillaryClinton", "Hillary Clinton");
+			input.put("Ben", "Ben Carson");
+			input.put("#HillaryClinton", "Hillary Clinton");
+			input.put("Carson", "Ben Carson");
+			input.put("@RealBenCarson", "Ben Carson");
+			input.put("#BenCarson","Ben Carson");
+			input.put("Jeb","Jeb Bush");
+			input.put("Bush","Jeb Bush");
+			input.put("@JebBush", "Jeb Bush");
+			input.put("#JebBush","Jeb Bush");
+			input.put("Bernie", "Bernie Sander");
+			input.put("Sanders", "Bernie Sander");
+			input.put("#BernieSanders","Bernie Sander");
+			input.put("Martin", "Martin O'Malley");
+			input.put("O'Malley", "Martin O'Malley");
+			input.put("@GovernorOMalley","Martin O'Malley");
+			input.put("Ted", "Ted Cruz");
+			input.put("Cruz", "Ted Cruz");
+			input.put("@tedcruz", "Ted Cruz");
+			input.put("Donald J.","Donald Trump");
+			input.put("Trump", "Donald Trump");
+			input.put("#DonaldTrump","Donald Trump");
+			input.put("@realDonaldTrump", "Donald Trump");
+		
+	}
 	@Override
 	public void map(LongWritable key, Text value, Context context)throws IOException, InterruptedException {
-		Status s;
 		try {
+			Status s;
 			System.out.println("Before create status tweet is");
 			s = TwitterObjectFactory.createStatus(value.toString());
 			System.out.println("After create status");
-				String status=s.getText();
-				System.out.println("After status getText "+status);
-		
-				for(String djs:dj1)
-				{
-					if(status.contains(djs))
-					{
-						System.out.println("Inside contains djs");
-						Text[] t=new Text[1];
-						t[0]=new Text(s.getText());
-						Text text = new Text(s.getText());
-						System.out.println("Inside contains djs");
-						log.info("Text "+t);
-						tw.set(text);
-						log.info("Mapper Output "+tw.toString());
-						context.write(new Text("Donald Trump"),tw);
-						break;
-					}
-				}		
+			String status=s.getText();
+			System.out.println("After status getText "+status);
+			StringTokenizer st=new StringTokenizer(status," ");
+			while(st.hasMoreTokens())
+			{
+			String in1=st.nextToken();	
+			if(input.containsKey(in1))
+			{
 				
-/*		for(String hcs:hc1)
-		{
-			if(status.contains(hcs))
-			{
-				System.out.println("Inside hillary contains hcs");
-				Text[] t=new Text[1];
-				t[0]=new Text(s.getText());
-				log.info("Text "+t);
-				tw.set(t);
-				log.info("Mapper Output "+tw.toString());
-				context.write(new Text("Hillary Clinton"),tw);
-				break;
+				int fol=s.getUser().getFollowersCount();
+				String place=s.getUser().getLocation();
+				Text tplace=new Text(place);
+				Text candidate=new Text(input.get(in1));
+				tw.set(new IntWritable(fol),tplace);
+//				tw.set(new IntWritable(fav));
+				context.write(candidate, tw);
 			}
-		}
-	for(String djs:dj1)
-		{
-			if(status.contains(djs))
-			{
-				log.info(" "+djs);
-				String[] s2={s.getPlace().getFullName(),s.getCreatedAt().toString(),Integer.toString(s.getRetweetCount()),Integer.toString(s.getFavoriteCount())};
-				context.write(new Text("Donald Trump"),new TextArrayWritable(s2));
-				break;
 			}
-		}
-		for(String jbs:jb1)
-		{
-			if(status.contains(jbs))
-			{	
-				log.info(" "+jbs);
-				String[] s3={s.getPlace().getFullName(),s.getCreatedAt().toString(),Integer.toString(s.getRetweetCount()),Integer.toString(s.getFavoriteCount())};
-				context.write(new Text("Jeb Bush"),new TextArrayWritable(s3));
-				break;
-			}
-		}
-		for(String bcs:bs1)
-		{
-			if(status.contains(bcs))
-			{
-				log.info(" "+bcs);
-				String[] s4={s.getPlace().getFullName(),s.getCreatedAt().toString(),Integer.toString(s.getRetweetCount()),Integer.toString(s.getFavoriteCount())};
-				context.write(new Text("Bernie Sanders"),new TextArrayWritable(s4));
-				break;
-			}
-		}
-		for(String mms:mm1)
-		{
-			if(status.contains(mms))
-			{
-				String[] s5={s.getPlace().getFullName(),s.getCreatedAt().toString(),Integer.toString(s.getRetweetCount()),Integer.toString(s.getFavoriteCount())};
-				context.write(new Text("Martin O'Malley"),new TextArrayWritable(s5));
-				break;
-			}
-		}
-		for(String tcs:tc1)
-		{
-			if(status.contains(tcs))
-			{
-				String[] s1={s.getPlace().getFullName(),s.getCreatedAt().toString(),Integer.toString(s.getRetweetCount()),Integer.toString(s.getFavoriteCount())};
-				context.write(new Text("Ted Cruz"),new TextArrayWritable(s1));
-				break;
-			}
-		}	
-	} catch (Exception e) {
-		System.err.println(e.getStackTrace());
-		System.err.println(e);
-		System.err.println(e.getMessage());
-		System.err.println(e.toString());
-	}
 	
-*/		
-		} catch (TwitterException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			System.out.println("Inside TwitterException for tweet value is"+ value.toString());
-			e.printStackTrace();
+			System.err.println("Inside TwitterException for tweet value"+value.toString());
 			return;
 		}
 	}
+	
 
 	
 	
