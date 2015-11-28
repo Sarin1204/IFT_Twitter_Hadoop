@@ -2,6 +2,7 @@ package cloud.project1;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -26,8 +27,8 @@ import twitter4j.TwitterObjectFactory;
 public class Mapper1 extends Mapper<LongWritable,Text,Text,CustomWritable>{
 	Logger log= LoggerFactory.getLogger(Mapper1.class);
 	CustomWritable tw =new CustomWritable();
+	int tempcount=0;
 	HashMap<String,String> input=new HashMap<String,String>();
-	
 	
 	@Override
 	public void setup(Context ct)
@@ -47,7 +48,7 @@ public class Mapper1 extends Mapper<LongWritable,Text,Text,CustomWritable>{
 			input.put("Bernie", "Bernie Sander");
 			input.put("Sanders", "Bernie Sander");
 			input.put("#BernieSanders","Bernie Sander");
-			input.put("Martin", "Martin O'Malley");
+			input.put("#MartinO'Malley", "Martin O'Malley");
 			input.put("O'Malley", "Martin O'Malley");
 			input.put("@GovernorOMalley","Martin O'Malley");
 			input.put("Ted", "Ted Cruz");
@@ -62,8 +63,8 @@ public class Mapper1 extends Mapper<LongWritable,Text,Text,CustomWritable>{
 	@Override
 	public void map(LongWritable key, Text value, Context context)throws IOException, InterruptedException {
 		try {
+			HashMap<Text,CustomWritable> output=new HashMap<Text,CustomWritable>();
 			Status s;
-			System.out.println("Before create status tweet is");
 			s = TwitterObjectFactory.createStatus(value.toString());
 			System.out.println("After create status");
 			String status=s.getText();
@@ -80,13 +81,15 @@ public class Mapper1 extends Mapper<LongWritable,Text,Text,CustomWritable>{
 				Text tplace=new Text(place);
 				Text candidate=new Text(input.get(in1));
 				tw.set(new IntWritable(fol),tplace);
-//				tw.set(new IntWritable(fav));
-				context.write(candidate, tw);
+				output.put(candidate,tw);
 			}
 			}
-	
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			for(Map.Entry<Text,CustomWritable> input:output.entrySet())
+			{
+				context.write(input.getKey(), input.getValue());
+			}
+			
+		} catch (Exception e) {			
 			System.err.println("Inside TwitterException for tweet value"+value.toString());
 			return;
 		}
