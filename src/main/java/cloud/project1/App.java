@@ -1,14 +1,15 @@
 package cloud.project1;
 
 
-import java.util.*;
-import java.io.*;
-import org.apache.hadoop.mapreduce.*;
+import java.io.IOException;
+
+import org.apache.hadoop.fs.FileStatus;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-
-import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.*;
 
 public class App {
 	
@@ -17,7 +18,14 @@ public class App {
 		Job j=new Job();
 		j.setJarByClass(App.class);
 		j.setJobName("Project");
-		FileInputFormat.addInputPath(j,new Path("/project/input/stream"));
+		FileSystem fs= FileSystem.get(j.getConfiguration());
+		FileStatus[] status_list = fs.listStatus(new Path("/project/input"));
+		if(status_list != null){
+		    for(FileStatus status : status_list){
+		        //add each file to the list of inputs for the map-reduce job
+		        FileInputFormat.addInputPath(j, status.getPath());
+		    }
+		}
 		FileOutputFormat.setOutputPath(j,new Path("/project/output/tweetOutput1"));
 		j.setMapperClass(Mapper1.class);
 		j.setReducerClass(Reducer1.class);

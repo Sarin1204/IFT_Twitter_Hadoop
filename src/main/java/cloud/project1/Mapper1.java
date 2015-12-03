@@ -66,9 +66,9 @@ public class Mapper1 extends Mapper<LongWritable,Text,Text,CustomWritable>{
 			HashMap<Text,CustomWritable> output=new HashMap<Text,CustomWritable>();
 			Status s;
 			s = TwitterObjectFactory.createStatus(value.toString());
-			System.out.println("After create status");
+			/*System.out.println("After create status");*/
 			String status=s.getText();
-			System.out.println("After status getText "+status);
+			/*System.out.println("After status getText "+status);*/
 			StringTokenizer st=new StringTokenizer(status," ");
 			while(st.hasMoreTokens())
 			{
@@ -78,9 +78,10 @@ public class Mapper1 extends Mapper<LongWritable,Text,Text,CustomWritable>{
 				
 				int fol=s.getUser().getFollowersCount();
 				String place=s.getUser().getLocation();
+				int retweet = s.getRetweetedStatus().getRetweetCount();
 				Text tplace=new Text(place);
 				Text candidate=new Text(input.get(in1));
-				tw.set(new IntWritable(fol),tplace);
+				tw.set(new IntWritable(fol),tplace,new IntWritable(retweet));
 				output.put(candidate,tw);
 			}
 			}
@@ -90,7 +91,7 @@ public class Mapper1 extends Mapper<LongWritable,Text,Text,CustomWritable>{
 			}
 			
 		} catch (Exception e) {			
-			System.err.println("Inside TwitterException for tweet value"+value.toString());
+			/*System.err.println("Inside TwitterException for tweet value"+value.toString());*/
 			return;
 		}
 	}

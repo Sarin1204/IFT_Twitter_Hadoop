@@ -16,6 +16,17 @@ public class CustomWritable implements Writable {
 	
 	private IntWritable follower;
 	private Text place;
+	private IntWritable retweet;
+
+	public IntWritable getRetweet() {
+		return retweet;
+	}
+
+
+	public void setRetweet(IntWritable retweet) {
+		this.retweet = retweet;
+	}
+
 
 	public Text getPlace() {
 		return place;
@@ -30,13 +41,15 @@ public class CustomWritable implements Writable {
 	public CustomWritable() {
 		this.follower = new IntWritable();
 		this.place=new Text();
+		this.retweet=new IntWritable();
 	}
 	
 	
-	public void set(IntWritable follower,Text place){
-		System.out.println("IN Set ");
+	public void set(IntWritable follower,Text place,IntWritable retweet){
+		/*System.out.println("IN Set ");*/
 		this.follower=follower;
 		this.place=place;
+		this.retweet=retweet;
 	}
 	
 	/*@Override
@@ -51,6 +64,7 @@ public class CustomWritable implements Writable {
 	{
 		follower.readFields(in);
 		place.readFields(in);
+		retweet.readFields(in);
 	}
 	
 	
@@ -68,6 +82,7 @@ public class CustomWritable implements Writable {
 	{
 		follower.write(out);	
 		place.write(out);
+		retweet.write(out);
 	}
 
 
