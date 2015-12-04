@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Simple Sidebar - Start Bootstrap Template</title>
+
+    <!-- Bootstrap Core CSS -->
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <style>
+        /*!
+         * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)
+         * Code licensed under the Apache License v2.0.
+         * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+         */
+
+        /* Toggle Styles */
+
+        #wrapper {
+            padding-left: 0;
+            -webkit-transition: all 0.5s ease;
+            -moz-transition: all 0.5s ease;
+            -o-transition: all 0.5s ease;
+            transition: all 0.5s ease;
+        }
+
+        #wrapper.toggled {
+            padding-left: 250px;
+        }
+
+        #sidebar-wrapper {
+            z-index: 1000;
+            position: fixed;
+            left: 250px;
+            width: 0;
+            height: 100%;
+            margin-left: -250px;
+            overflow-y: auto;
+            background: #000;
+            -webkit-transition: all 0.5s ease;
+            -moz-transition: all 0.5s ease;
+            -o-transition: all 0.5s ease;
+            transition: all 0.5s ease;
+        }
+
+        #wrapper.toggled #sidebar-wrapper {
+            width: 250px;
+        }
+
+        #page-content-wrapper {
+            width: 100%;
+            position: absolute;
+            padding: 15px;
+        }
+
+        #wrapper.toggled #page-content-wrapper {
+            position: absolute;
+            margin-right: -250px;
+        }
+
+        /* Sidebar Styles */
+
+        .sidebar-nav {
+            position: absolute;
+            top: 0;
+            width: 250px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            text-indent: 20px;
+            line-height: 40px;
+        }
+
+        .sidebar-nav li a {
+            display: block;
+            text-decoration: none;
+            color: #999999;
+        }
+
+        .sidebar-nav li a:hover {
+            text-decoration: none;
+            color: #fff;
+            background: rgba(255,255,255,0.2);
+        }
+
+        .sidebar-nav li a:active,
+        .sidebar-nav li a:focus {
+            text-decoration: none;
+        }
+
+        .sidebar-nav > .sidebar-brand {
+            height: 65px;
+            font-size: 18px;
+            line-height: 60px;
+        }
+
+        .sidebar-nav > .sidebar-brand a {
+            color: #999999;
+        }
+
+        .sidebar-nav > .sidebar-brand a:hover {
+            color: #fff;
+            background: none;
+        }
+
+        @media(min-width:768px) {
+            #wrapper {
+                padding-left: 250px;
+            }
+
+            #wrapper.toggled {
+                padding-left: 0;
+            }
+
+            #sidebar-wrapper {
+                width: 250px;
+            }
+
+            #wrapper.toggled #sidebar-wrapper {
+                width: 0;
+            }
+
+            #page-content-wrapper {
+                padding: 20px;
+                position: relative;
+            }
+
+            #wrapper.toggled #page-content-wrapper {
+                position: relative;
+                margin-right: 0;
+            }
+        }
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            width: 960px;
+            height: 500px;
+            position: relative;
+        }
+        svg{
+            width: 100%;
+            height: 100%;
+        }
+        path.slice{
+            stroke-width:2px;
+        }
+
+        polyline{
+            opacity: .3;
+            stroke: black;
+            stroke-width: 2px;
+            fill: none;
+        }
+    </style>
+
+</head>
+
+<body>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand">
+                <a href="#">
+                    Twitter Analysis
+                </a>
+            </li>
+            <li>
+                <a href="http://ec2-54-213-214-14.us-west-2.compute.amazonaws.com/">Total Tweets</a>
+            </li>
+            <li>
+                <a href="http://ec2-54-213-214-14.us-west-2.compute.amazonaws.com/retweet.html">Retweets</a>
+            </li>
+            <li>
+                <a href="http://ec2-54-213-214-14.us-west-2.compute.amazonaws.com/followers.html">Followers</a>
+            </li>
+            <li>
+                <a href="http://ec2-54-213-214-14.us-west-2.compute.amazonaws.com/places.html">Tweets by Location</a>
+            </li>
+        </ul>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper" style="width:1000px; height:1000px">
+        <div class="container-fluid" style="width:1000px; height:1000px">
+            <div class="row" style="width:1000px; height:1000px">
+                <div class="col-lg-offset-4"><div id = title><h2>Tweets by Location</h2></div></div>
+                <script src="http://d3js.org/d3.v3.min.js"></script>
+                <div class="form-group col-md-4">
+                    <label for="selectCandidate">Select candidate:</label>
+                    <select class="form-control" id="selectCandidate">
+                        <option value="Hillary">Hillary Clinton</option>
+                        <option value="Donald">Donald Trump</option>
+                        <option value="Bernie">Bernie Sanders</option>
+                        <option value="Ted">Ted Cruz</option>
+                        <option value="Martin">Martin O' Malley</option>
+                        <option value="Jeb">Jeb Bush</option>
+                    </select>
+                </div>
+                <div id="graphDiv" class="col-lg-12" style="width:1000px; height:1000px">
+
+                    <script>
+                        $( "#selectCandidate" ).change(function() {
+                            var candidate = $("#selectCandidate").val();
+                            if (candidate == "Donald"){
+                            var data = [
+                                {"label":"Texas","value":0.35},
+                                {"label":"California","value":0.15},
+                                {"label":"New York","value":0.30}
+                                ]
+                            }
+                            else if(candidate == "Hillary"){
+                                var data = [
+                                    {"label":"Texas","value":0.45},
+                                    {"label":"New Jersey","value":0.30},
+                                    {"label":"New York","value":0.25}
+                                ]
+                            }
+                            else if(candidate == "Martin"){
+                                var data = [
+                                    {"label":"Texas","value":0.45},
+                                    {"label":"New Jersey","value":0.30},
+                                    {"label":"Arizona","value":0.25}
+                                ]
+                            }
+                            else if(candidate == "Bernie"){
+                                var data = [
+                                    {"label":"Texas","value":0.45},
+                                    {"label":"New Jersey","value":0.30},
+                                    {"label":"Vermont","value":0.25}
+                                ]
+                            }
+                            else if(candidate == "Jeb"){
+                                var data = [
+                                    {"label":"Texas","value":0.45},
+                                    {"label":"New Jersey","value":0.30},
+                                    {"label":"Vermont","value":0.25}
+                                ]
+                            }
+                            else if(candidate == "Ted"){
+                                var data = [
+                                    {"label":"Texas","value":0.45},
+                                    {"label":"New Jersey","value":0.30},
+                                    {"label":"Connecticut","value":0.25}
+                                ]
+                            }
+                            change(data)
+                        });
+
+                        var svg = d3.select("#graphDiv")
+                                .append("svg")
+                                .append("g")
+
+                        svg.append("g")
+                                .attr("class", "slices");
+                        svg.append("g")
+                                .attr("class", "labels");
+                        svg.append("g")
+                                .attr("class", "lines");
+
+                        var width = 960,
+                                height = 450,
+                                radius = Math.min(width, height) / 2;
+
+                        var pie = d3.layout.pie()
+                                .sort(null)
+                                .value(function(d) {
+                                    return d.value;
+                                });
+
+                        var arc = d3.svg.arc()
+                                .outerRadius(radius * 0.8)
+                                .innerRadius(radius * 0.4);
+
+                        var outerArc = d3.svg.arc()
+                                .innerRadius(radius * 0.9)
+                                .outerRadius(radius * 0.9);
+
+                        svg.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+                        var key = function(d){ return d.data.label; };
+
+                        var color = d3.scale.category20()
+                                .domain(["Lorem ipsum", "dolor sit", "amet", "consectetur", "adipisicing", "elit", "sed", "do", "eiusmod", "tempor", "incididunt"])
+                        //.range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+
+                        function randomData (){
+                            var labels = color.domain();
+                            return labels.map(function(label){
+                                return { label: label, value: Math.random() }
+                            }).filter(function() {
+                                return Math.random() > .5;
+                            }).sort(function(a,b) {
+                                return d3.ascending(a.label, b.label);
+                            });
+                        }
+                        var data = [
+                            {"label":"Texas - 35%","value":0.35},
+                            {"label":"Arizona - 35%","value":0.35},
+                            {"label":"New York - 30%","value":0.30}
+                        ]
+                        change(data);
+
+                        function mergeWithFirstEqualZero(first, second){
+                            var secondSet = d3.set(); second.forEach(function(d) { secondSet.add(d.label); });
+
+                            var onlyFirst = first
+                                    .filter(function(d){ return !secondSet.has(d.label) })
+                                    .map(function(d) { return {label: d.label, value: 0}; });
+                            return d3.merge([ second, onlyFirst ])
+                                    .sort(function(a,b) {
+                                        return d3.ascending(a.label, b.label);
+                                    });
+                        }
+
+                        function change(data) {
+                            var duration = 2500;
+                            var data0 = svg.select(".slices").selectAll("path.slice")
+                                    .data().map(function(d) { return d.data });
+                            if (data0.length == 0) data0 = data;
+                            var was = mergeWithFirstEqualZero(data, data0);
+                            var is = mergeWithFirstEqualZero(data0, data);
+
+                            /* ------- SLICE ARCS -------*/
+
+                            var slice = svg.select(".slices").selectAll("path.slice")
+                                    .data(pie(was), key);
+
+                            slice.enter()
+                                    .insert("path")
+                                    .attr("class", "slice")
+                                    .style("fill", function(d) { return color(d.data.label); })
+                                    .each(function(d) {
+                                        this._current = d;
+                                    });
+
+                            slice = svg.select(".slices").selectAll("path.slice")
+                                    .data(pie(is), key);
+
+                            slice
+                                    .transition().duration(duration)
+                                    .attrTween("d", function(d) {
+                                        var interpolate = d3.interpolate(this._current, d);
+                                        var _this = this;
+                                        return function(t) {
+                                            _this._current = interpolate(t);
+                                            return arc(_this._current);
+                                        };
+                                    });
+
+                            slice = svg.select(".slices").selectAll("path.slice")
+                                    .data(pie(data), key);
+
+                            slice
+                                    .exit().transition().delay(duration).duration(0)
+                                    .remove();
+
+                            /* ------- TEXT LABELS -------*/
+
+                            var text = svg.select(".labels").selectAll("text")
+                                    .data(pie(was), key);
+
+                            text.enter()
+                                    .append("text")
+                                    .attr("dy", ".35em")
+                                    .style("opacity", 0)
+                                    .text(function(d) {
+                                        return d.data.label;
+                                    })
+                                    .each(function(d) {
+                                        this._current = d;
+                                    });
+
+                            function midAngle(d){
+                                return d.startAngle + (d.endAngle - d.startAngle)/2;
+                            }
+
+                            text = svg.select(".labels").selectAll("text")
+                                    .data(pie(is), key);
+
+                            text.transition().duration(duration)
+                                    .style("opacity", function(d) {
+                                        return d.data.value == 0 ? 0 : 1;
+                                    })
+                                    .attrTween("transform", function(d) {
+                                        var interpolate = d3.interpolate(this._current, d);
+                                        var _this = this;
+                                        return function(t) {
+                                            var d2 = interpolate(t);
+                                            _this._current = d2;
+                                            var pos = outerArc.centroid(d2);
+                                            pos[0] = radius * (midAngle(d2) < Math.PI ? 1 : -1);
+                                            return "translate("+ pos +")";
+                                        };
+                                    })
+                                    .styleTween("text-anchor", function(d){
+                                        var interpolate = d3.interpolate(this._current, d);
+                                        return function(t) {
+                                            var d2 = interpolate(t);
+                                            return midAngle(d2) < Math.PI ? "start":"end";
+                                        };
+                                    });
+
+                            text = svg.select(".labels").selectAll("text")
+                                    .data(pie(data), key);
+
+                            text
+                                    .exit().transition().delay(duration)
+                                    .remove();
+
+                            /* ------- SLICE TO TEXT POLYLINES -------*/
+
+                            var polyline = svg.select(".lines").selectAll("polyline")
+                                    .data(pie(was), key);
+
+                            polyline.enter()
+                                    .append("polyline")
+                                    .style("opacity", 0)
+                                    .each(function(d) {
+                                        this._current = d;
+                                    });
+
+                            polyline = svg.select(".lines").selectAll("polyline")
+                                    .data(pie(is), key);
+
+                            polyline.transition().duration(duration)
+                                    .style("opacity", function(d) {
+                                        return d.data.value == 0 ? 0 : .5;
+                                    })
+                                    .attrTween("points", function(d){
+                                        this._current = this._current;
+                                        var interpolate = d3.interpolate(this._current, d);
+                                        var _this = this;
+                                        return function(t) {
+                                            var d2 = interpolate(t);
+                                            _this._current = d2;
+                                            var pos = outerArc.centroid(d2);
+                                            pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
+                                            return [arc.centroid(d2), outerArc.centroid(d2), pos];
+                                        };
+                                    });
+
+                            polyline = svg.select(".lines").selectAll("polyline")
+                                    .data(pie(data), key);
+
+                            polyline
+                                    .exit().transition().delay(duration)
+                                    .remove();
+                        };
+
+                    </script>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+
+<!-- jQuery -->
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+<!-- Menu Toggle Script -->
+<script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+</script>
+
+</body>
+
+</html>
